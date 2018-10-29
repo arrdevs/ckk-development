@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Insert title here</title>
+</head>
+<body>
+	<form th:action="@{/dashboard/import}" method="post" enctype="multipart/form-data">
+    	<input type="file" th:name="file" />
+		<input th:type="submit" value="Import" />
+	</form>
+</body>
+</html>

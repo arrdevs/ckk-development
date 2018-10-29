@@ -1,4 +1,4 @@
-package com.client.keranjangkita.api;
+package com.client.keranjangkita.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,44 +8,29 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.client.keranjangkita.model.Item;
 import com.client.keranjangkita.service.ProductService;
 
-
-@RestController
-@RequestMapping("/ckk/product/")
-public class Product {
+@Controller
+@RequestMapping("/dashboard")
+public class ProductDashboard {
 
 	@Autowired
 	ProductService productService;
 	
-	@RequestMapping(value="/save", method=RequestMethod.GET)
-	public void index() {
-		System.out.println("hallo guys..!!");
-	}
-	
-	@RequestMapping(value="/search", method=RequestMethod.POST)
-	@ResponseBody
-	public List<Item> findByItemCodeOrBarCode(@RequestBody List<Item> items){
-		
-		List<Item> itemResults = productService.findByItemCode(items);
-		
-		return itemResults;
+	@RequestMapping("/upload")
+	public String index() {
+		return "upload";
 	}
 	
 	@PostMapping("/import")
-	public void mapReapExcelDatatoDB(@RequestParam("file") MultipartFile reapExcelDataFile) throws IOException {
+	public String mapReapExcelDatatoDB(@RequestParam("file") MultipartFile reapExcelDataFile) throws IOException {
 	   List<Item> items = new ArrayList();
 	
 	   XSSFWorkbook workbook = new XSSFWorkbook(reapExcelDataFile.getInputStream());
@@ -106,28 +91,9 @@ public class Product {
 	    }
 	    if(!items.isEmpty()) {
 	    	productService.save(items);
-	    }
+	    }	    
 	    
+	    return "redirect:/dashboard/upload";
 	}
 
 }
-/*
- * 1. item_id	
- * 2. merchant_code	
- * 3. item_code	
- * 4. bar_code	
- * 5. name	
- * 6. netto	
- * 7. brutto	
- * 8. length_of_item	
- * 9. height_of_item	
- * 10. width_of_item	
- * 11. description	
- * 12. stock	
- * 13. price	
- * 14. status	
- * 15. uom	
- * 16. weight	
- * 17. weight_type	
- * 18. image_url
- * */
