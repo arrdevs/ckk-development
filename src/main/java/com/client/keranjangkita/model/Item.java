@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -64,7 +65,38 @@ public class Item {
 	@Column(name="image_url")
 	private String imageUrl;
 	private String status;
+	private String note;
+	@Transient
+	private String statusItem;
+	@Transient
+	private String statusStock;
+	@Transient
+	private int qty;
 	
+	public int getQty() {
+		return qty;
+	}
+	public void setQty(int qty) {
+		this.qty = qty;
+	}
+	public String getStatusItem() {
+		return statusItem;
+	}
+	public void setStatusItem(String statusItem) {
+		this.statusItem = statusItem;
+	}
+	public String getStatusStock() {
+		return statusStock;
+	}
+	public void setStatusStock(String statusStock) {
+		this.statusStock = statusStock;
+	}
+	public String getNote() {
+		return note;
+	}
+	public void setNote(String note) {
+		this.note = note;
+	}
 	public String getMerchantCode() {
 		return merchantCode;
 	}

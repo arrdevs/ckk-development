@@ -31,7 +31,6 @@ public class ProductService {
 
 	public List<Item> findByItemCode(List<Item> items) {
 		// TODO Auto-generated method stub
-		
 		List<String> dataCode = new ArrayList();
 		int i = 0;
 		for(Item item : items) {
@@ -42,35 +41,47 @@ public class ProductService {
 	}
 	
 	public List<Merchant> findByMerchantListItem(List<Merchant> merchants){
-		List<Item> resultItem = new ArrayList();	
+		List<Merchant> resultMerchant= new ArrayList();
 		for(Merchant merchant : merchants) {
-				List<String> itemsCodes = new ArrayList();
-				for(Item item : merchant.getItems()) {
-					String itemCode = item.getItemCode();
-					itemsCodes.add(itemCode);
-				}
-				//datasource
-				List<Item> itemsRs = productDao.findByMerchantListItem(itemsCodes, merchant.getMerchantCode());
-				
-				//select merchant item result
-				for(Item searchItem : merchant.getItems()) {
-							  Item mit = new Item();
-							  mit =itemsRs.stream()
-				    		  .filter(it -> it.getItemCode().equals(searchItem.getItemCode()))
-				    		  .findAny().orElse(null);
-							  double itemPrice = 0;
-							  int itemInStock = 0;
-							  if(mit != null) {
-								itemPrice = mit.getPrice();
-								itemInStock = mit.getInStock();
-							  } 
-							  searchItem.setPrice(itemPrice);
-							  searchItem.setInStock(itemInStock);
-							  //merchant.setItems(items);
-					resultItem.add(searchItem);
-				}
-				merchant.setItems(resultItem);
+			List<Item> resultItem = new ArrayList();
+			List<String> itemsCodes = new ArrayList();
+			for(Item item : merchant.getItems()) {
+				String itemCode = item.getItemCode();
+				itemsCodes.add(itemCode);
 			}
+			//datasource
+			List<Item> itemsRs = productDao.findByMerchantListItem(itemsCodes, merchant.getMerchantCode());
+			//select merchant item result
+			int i = 0;
+			for(Item searchItem : merchant.getItems()) {
+				  Item mit = new Item();
+				  mit =itemsRs.stream()
+	    		  .filter(it -> it.getItemCode().equals(searchItem.getItemCode()))
+	    		  .findAny().orElse(null);
+				  double itemPrice = 0;
+				  int itemInStock = 0;
+				  String statusItem = "0";
+				  String statusStock = "0";
+				  //stock if available
+				  //jika barang ada
+				if(mit != null) {								
+					itemPrice = mit.getPrice();
+					itemInStock = mit.getInStock();
+					statusItem = "1";
+					if((mit.getInStock() - searchItem.getQty()) >= 0) {
+	//						 //jika stock ada
+						  statusStock = "1";
+					}
+				}  
+				  
+				  searchItem.setPrice(itemPrice);
+				  searchItem.setInStock(itemInStock);
+				  searchItem.setStatusItem(statusItem);
+				  searchItem.setStatusStock(statusStock);
+						  //check value merchant product
+				resultItem.add(searchItem);
+			}
+		}
 			return merchants;
 	}
 }
