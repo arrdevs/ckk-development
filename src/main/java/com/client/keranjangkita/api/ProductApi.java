@@ -3,6 +3,7 @@ package com.client.keranjangkita.api;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.client.keranjangkita.model.Item;
+import com.client.keranjangkita.model.Merchant;
 import com.client.keranjangkita.service.ProductService;
 
 
@@ -36,4 +38,10 @@ public class ProductApi {
 		List<Item> itemResults = productService.findByItemCode(items);
 		return itemResults;
 	}
+	
+	@RequestMapping(value="/searchmp", method=RequestMethod.POST)
+	@ResponseBody
+	public List<Merchant> findMerchantItemByItemCode(@RequestBody List<Merchant> merchants ){
+		return productService.findByMerchantListItem(merchants);
+}
 }
