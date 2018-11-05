@@ -22,10 +22,11 @@ public class ProductService {
 	@Transactional
 	public void save(List<Item> items) {
 		//for new instance if there are no any id before.
-		for(Item item : items) {
-				Item itemku = (productDao.findByItemCode(item.getItemCode()) == null) ? item : productDao.findByItemCode(item.getItemCode());
-				item.setId(itemku.getId());
-		}
+//		for(Item item : items) {
+//				Item itemku = (productDao.findByItemCode(item.getItemCode()) == null) ? item : productDao.findByItemCode(item.getItemCode());
+//				item.setId(itemku.getId());
+//		}
+		
 		productDao.saveAll(items);
 	}
 
@@ -54,14 +55,14 @@ public class ProductService {
 			//select merchant item result
 			int i = 0;
 			for(Item searchItem : merchant.getItems()) {
-				  Item mit = new Item();
-				  mit =itemsRs.stream()
-	    		  .filter(it -> it.getItemCode().equals(searchItem.getItemCode()))
-	    		  .findAny().orElse(null);
-				  double itemPrice = 0;
-				  int itemInStock = 0;
-				  String statusItem = "0";
-				  String statusStock = "0";
+				Item mit = new Item();
+				mit =itemsRs.stream()
+				.filter(it -> it.getItemCode().equals(searchItem.getItemCode()))
+				.findAny().orElse(null);
+				double itemPrice = 0;
+				int itemInStock = 0;
+				String statusItem = "0";
+				String statusStock = "0";
 				  //stock if available
 				  //jika barang ada
 				if(mit != null) {								

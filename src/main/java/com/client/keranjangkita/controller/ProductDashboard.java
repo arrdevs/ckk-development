@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -34,60 +35,52 @@ public class ProductDashboard {
 	   List<Item> items = new ArrayList();
 	
 	   XSSFWorkbook workbook = new XSSFWorkbook(reapExcelDataFile.getInputStream());
-	    XSSFSheet worksheet = workbook.getSheetAt(0);
-	    //make sure that row is not empty, example: probably cause the cache
-	    int loop = 1;
-	    for(int i=1;i<worksheet.getPhysicalNumberOfRows() ;i++) {
-	    	 XSSFRow row = worksheet.getRow(i);
-	    	 String itemCode =(row.getCell(3) != null) ? row.getCell(3).getStringCellValue() : "";
-	    	 if(!itemCode.equals("")) {
-	    		 loop++;
-	    	 }
-	    }
-	    
-	    for(int i=1;i< loop;i++) {
+	    XSSFSheet worksheet = workbook.getSheetAt(0);   
+	    DataFormatter formatter = new DataFormatter();
+	    for(int i=1;i< worksheet.getPhysicalNumberOfRows();i++) {
 	        XSSFRow row = worksheet.getRow(i);
-	        String itemId = (row.getCell(1) != null) ? row.getCell(1).getStringCellValue() : null;
-	        String merchantCode = (row.getCell(2) != null) ? row.getCell(2).getStringCellValue() : "";
-	        String itemCode =(row.getCell(3) != null) ? row.getCell(3).getStringCellValue() : "";
-	        String barCode = (row.getCell(4) != null) ? row.getCell(4).getStringCellValue() : "";
-	        String name = (row.getCell(5) != null) ? row.getCell(5).getStringCellValue() : "";
-	        String netto = (row.getCell(6) != null) ? row.getCell(6).getStringCellValue() : "";
-	        String brutto = (row.getCell(7) != null) ? row.getCell(7).getStringCellValue() : "";
-	        String loi = (row.getCell(8) != null) ? row.getCell(8).getStringCellValue() : "";
-	        String hoi = (row.getCell(9) != null) ? row.getCell(9).getStringCellValue() : "";
-	        String woi = (row.getCell(10) != null) ? row.getCell(10).getStringCellValue() : "";
-	        String desc =(row.getCell(11) != null) ? row.getCell(11).getStringCellValue() : "";
-	        int stock = (row.getCell(12) != null) ? (int)row.getCell(12).getNumericCellValue() : 0;
-	        double price = (row.getCell(13) != null) ? (double)row.getCell(13).getNumericCellValue() : 0;
-	        String status = (row.getCell(14) != null) ? row.getCell(14).getStringCellValue() : "";
-	        String uom = (row.getCell(15) != null) ? row.getCell(15).getStringCellValue() : "";
-	        String weight = (row.getCell(16) != null) ? row.getCell(16).getStringCellValue() : "";
-	        String weightType = (row.getCell(17) != null) ? row.getCell(17).getStringCellValue() : "";
-	        String imageUrl = (row.getCell(18) != null) ? row.getCell(18).getStringCellValue() : "";
-	        int amountAvailability = (row.getCell(19) != null) ? (int)row.getCell(19).getNumericCellValue() : 0;
+		        String itemId = formatter.formatCellValue(row.getCell(1));
+		        String merchantCode = formatter.formatCellValue(row.getCell(2));
+		        String itemCode = formatter.formatCellValue(row.getCell(3));
+		        String barCode = formatter.formatCellValue(row.getCell(4));
+		        String name = formatter.formatCellValue(row.getCell(5));
+		        String netto = formatter.formatCellValue(row.getCell(6));
+		        String brutto = formatter.formatCellValue(row.getCell(7));
+		        String loi = formatter.formatCellValue(row.getCell(8));
+		        String hoi = formatter.formatCellValue(row.getCell(9));
+		        String woi = formatter.formatCellValue(row.getCell(10));
+		        String desc =formatter.formatCellValue(row.getCell(11));
+		        String stock = formatter.formatCellValue(row.getCell(12));
+		        double price = (row.getCell(13) != null) ? row.getCell(13).getNumericCellValue() : 0;
+		        String status = formatter.formatCellValue(row.getCell(14));
+		        String uom = formatter.formatCellValue(row.getCell(15));
+		        String weight = formatter.formatCellValue(row.getCell(16));
+		        String weightType =formatter.formatCellValue(row.getCell(17));
+		        String imageUrl = formatter.formatCellValue(row.getCell(18));
+		        String amountAvailability = formatter.formatCellValue(row.getCell(19));
+		        
+		        Item item = new Item();
+		        item.setId(itemId);
+		        item.setMerchantCode(merchantCode);
+		        item.setItemCode(itemCode);
+		        item.setName(name);
+		        item.setBarCode(barCode);
+		        item.setNetto(netto);
+		        item.setBrutto(brutto);
+		        item.setLengthOfItem(loi);
+		        item.setLengthOfItem(hoi);
+		        item.setWidthOfItem(woi);
+		        item.setDescription(desc);
+		        item.setInStock(Integer.parseInt(stock));
+		        item.setPrice(price);
+		        item.setStatus(status);
+		        item.setUom(uom);
+		        item.setWeight(weight);
+		        item.setWeightType(weightType);
+		        item.setImageUrl(imageUrl);
+		        item.setAmount_availability(Integer.parseInt(amountAvailability));
+		        items.add(item);
 	        
-	        Item item = new Item();
-	        item.setId(itemId);
-	        item.setMerchantCode(merchantCode);
-	        item.setItemCode(itemCode);
-	        item.setName(name);
-	        item.setBarCode(barCode);
-	        item.setNetto(netto);
-	        item.setBrutto(brutto);
-	        item.setLengthOfItem(loi);
-	        item.setLengthOfItem(hoi);
-	        item.setWidthOfItem(woi);
-	        item.setDescription(desc);
-	        item.setInStock(stock);
-	        item.setPrice(price);
-	        item.setStatus(status);
-	        item.setUom(uom);
-	        item.setWeight(weight);
-	        item.setWeightType(weightType);
-	        item.setImageUrl(imageUrl);
-	        item.setAmount_availability(amountAvailability);
-	        items.add(item);
 	    }
 	    if(!items.isEmpty()) {
 	    	productService.save(items);
