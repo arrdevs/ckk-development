@@ -76,7 +76,7 @@ public class ProductService {
 					}
 				}  
 				  
-				  searchItem.setPrice(7000);
+				  searchItem.setPrice(itemPrice);
 				  searchItem.setInStock(itemInStock);
 				  searchItem.setStatusItem(statusItem);
 				  searchItem.setStatusStock(statusStock);
