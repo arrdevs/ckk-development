@@ -30,7 +30,7 @@ public class ProductService {
 		productDao.saveAll(items);
 	}
 
-	public List<Item> findByItemCode(List<Item> items) {
+	public List<Item> findByItemCode(List<Item> items) { 
 		// TODO Auto-generated method stub
 		List<String> dataCode = new ArrayList();
 		int i = 0;
@@ -59,6 +59,7 @@ public class ProductService {
 				mit =itemsRs.stream()
 				.filter(it -> it.getItemCode().equals(searchItem.getItemCode()))
 				.findAny().orElse(null);
+				
 				double itemPrice = 0;
 				int itemInStock = 0;
 				String statusItem = "0";
@@ -82,6 +83,8 @@ public class ProductService {
 						  //check value merchant product
 				resultItem.add(searchItem);
 			}
+			merchant.setItems(resultItem);
+			
 		}
 			return merchants;
 	}

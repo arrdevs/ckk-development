@@ -83,6 +83,7 @@ public class ProductDashboard {
 	        
 	    }
 	    if(!items.isEmpty()) {
+	    	
 	    	productService.save(items);
 	    }	    
 	    
