@@ -22,10 +22,10 @@ public class ProductService {
 	@Transactional
 	public void save(List<Item> items) {
 		//for new instance if there are no any id before.
-//		for(Item item : items) {
-//				Item itemku = (productDao.findByItemCode(item.getItemCode()) == null) ? item : productDao.findByItemCode(item.getItemCode());
-//				item.setId(itemku.getId());
-//		}
+		for(Item item : items) {
+				Item itemku = (productDao.findByItemCode(item.getItemCode()) == null) ? item : productDao.findByItemCode(item.getItemCode());
+				item.setId(itemku.getId());
+		}
 		
 		productDao.saveAll(items);
 	}
@@ -67,22 +67,24 @@ public class ProductService {
 				  //stock if available
 				  //jika barang ada
 				if(mit != null) {								
-					itemPrice = mit.getPrice();
+					itemPrice = (mit.getPrice());
 					itemInStock = mit.getInStock();
 					statusItem = "1";
 					if((mit.getInStock() - searchItem.getQty()) >= 0) {
 	//						 //jika stock ada
 						  statusStock = "1";
 					}
-				}  
-				  
+				} 
+				
+				  //description come FROM local master
 				  searchItem.setPrice(itemPrice);
 				  searchItem.setInStock(itemInStock);
 				  searchItem.setStatusItem(statusItem);
 				  searchItem.setStatusStock(statusStock);
-						  //check value merchant product
+				  //check value merchant product
 				resultItem.add(searchItem);
 			}
+			
 			merchant.setItems(resultItem);
 			
 		}
