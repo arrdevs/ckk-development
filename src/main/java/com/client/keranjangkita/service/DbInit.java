@@ -24,7 +24,7 @@ public class DbInit {
 	@Autowired
 	ProductService productService;
 	
-	//@PostConstruct
+	@PostConstruct
 	public void init() throws IOException {
 		List<Item> items = new ArrayList();
 		   Resource resource = new ClassPathResource("/static/sample_merchant_short_complate.xlsx");
