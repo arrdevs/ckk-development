@@ -79,7 +79,7 @@ public class DbInit {
 			        items.add(item);
 			}
 		    if(!items.isEmpty()) {
-		    	//productService.save(items);
+		    	productService.save(items);
 		    }	    
 	}
 }
